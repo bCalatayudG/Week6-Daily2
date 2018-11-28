@@ -1,11 +1,11 @@
 # Week6Daily2
 
-##Read Me file.
+## Read Me file.
 
 Complete the Amazon books challenge
 
 
-##Instructions: 
+## Instructions: 
 
 1. Use dagger for dependency injection
 2. Room for LocalDataSource
