@@ -18,6 +18,7 @@ import com.example.user.amazonbooksexample.model.Book;
 import java.util.List;
 
 public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     List<Book> bookList;
     Context context;
 
@@ -27,20 +28,32 @@ public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        // Just as an example, return 0 or 2 depending on position
-        // Note that unlike in ListView adapters, types don't have to be contiguous
-        return position % 2 * 2;
+
+        if (bookList.get(position).getTitle().contains("Harry Potter")) return 0;
+        else return 1;
+
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_book_list, null);
         this.context = viewGroup.getContext();
-        if (i == 0)
-            return new BookImageViewHolder(view);
-        else
-            return new BookViewHolder(view);
+        int currentLayout = 0;
+        RecyclerView.ViewHolder viewHolder = null;
+        View view;
+        switch (i) {
+            case 0:
+                currentLayout = R.layout.item_book_list;
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(currentLayout, null);
+                viewHolder = new BookViewHolder(view);
+                break;
+            case 1:
+                currentLayout = R.layout.item_book_list_image;
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(currentLayout, null);
+                viewHolder = new BookImageViewHolder(view);
+                break;
+        }
+        return viewHolder;
     }
 
 
@@ -50,21 +63,21 @@ public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        viewHolder.getItemViewType()
         switch (viewHolder.getItemViewType()) {
             case 0:
-                BookImageViewHolder bookImageViewHolder = (BookImageViewHolder) viewHolder;
-                Glide.with(context)
-                        .load(book.getImageURL())
-                        .into(bookImageViewHolder.ivBook);
-                break;
-            case 2:
+
                 BookViewHolder bookViewHolder = (BookViewHolder) viewHolder;
                 Glide.with(context)
                         .load(book.getImageURL())
                         .into(bookViewHolder.ivBook);
                 bookViewHolder.tvTitle.setText(book.getTitle());
+
+                break;
+            case 1:
+                BookImageViewHolder bookImageViewHolder = (BookImageViewHolder) viewHolder;
+                Glide.with(context)
+                        .load(book.getImageURL())
+                        .into(bookImageViewHolder.ivBook);
                 break;
         }
-
-
     }
 
 
@@ -73,7 +86,10 @@ public class BookListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return bookList.size();
     }
 
-    //Depending on the data that we are receiving, if the title Doesn't have HARRY POTTER
-    //ViewModelProvider.AndroidViewModelFactory use this
-    //Local Data source (ROOM) Limit of five minutes, more than that make a call.
+
+    public void addAll(List<Book> books) {
+        this.bookList.clear();
+        this.bookList.addAll(books);
+        notifyDataSetChanged();
+    }
 }

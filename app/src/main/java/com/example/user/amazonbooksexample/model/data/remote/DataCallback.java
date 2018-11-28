@@ -1,4 +1,4 @@
-package com.example.user.amazonbooksexample.model.data;
+package com.example.user.amazonbooksexample.model.data.remote;
 
 import com.example.user.amazonbooksexample.model.Book;
 
