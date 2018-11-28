@@ -1,4 +1,4 @@
-# Week6Daily2
+# Week6-Daily2
 
 ## Read Me file.
 
